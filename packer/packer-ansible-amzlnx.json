@@ -1,0 +1,31 @@
+{
+  "_comment" : "Create a AWS AMI ith AMZ Linux 2018 with nginx,cowsay,htop,tmux",
+  "variables": {
+    "aws_access_key": "",
+        "aws_secret_key": "",
+        "ami_image_id": "ami-028188d9b49b32a80"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "{{user `ami_image_id`}}",
+    "instance_type": "t2.micro",
+    "ssh_username": "ec2-user",
+    "ami_name": "Req-Test-{{timestamp}}"
+     }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sudo yum install cowsay -y",
+      "sudo yum update -y && sudo yum install python36 -y"
+      ]
+  },
+   {
+    "type": "ansible",
+    "playbook_file": "./playbook.yml"
+  }
+
+  ]
+}

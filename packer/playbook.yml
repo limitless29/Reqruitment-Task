@@ -1,0 +1,17 @@
+---
+  - name: Play for Installing Packages
+    hosts: all
+    become: true
+    gather_facts: no
+    tasks:
+       - name: Run Yum Update
+         yum: update_cache=yes
+
+       - name: Install nginx,htop,tmux
+         yum: >
+           name={{item}}
+           state=installed
+         with_items:
+              - nginx
+              - htop
+              - tmux
